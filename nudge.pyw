@@ -13,9 +13,10 @@ class MainApplication(tk.Frame):
         self.master.title("Break")
         self.master.geometry("200x100")
         self.master.resizable(False, False)
+
     def create_widgets(self):
-        pass
-       # ...
+        b_quit = tk.Button(self.master, text = "Quit", width = 10, command = quit)
+        b_quit.pack()
 
 if __name__ == '__main__':
    root = tk.Tk()
