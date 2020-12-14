@@ -95,6 +95,7 @@ class MainApplication(tk.Frame, TimeHanle):
     def loop(self):
         if self.popup_due():
             self.master.deiconify() # pop-up the window
+            self.entry.focus()
 
         self.widgets_update()
 
