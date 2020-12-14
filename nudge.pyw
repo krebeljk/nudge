@@ -61,6 +61,10 @@ class MainApplication(tk.Frame, TimeHanle):
         self.lab_count = tk.Label(self.master, width = 15)
         self.lab_count.pack()
 
+        # label left
+        self.lab_left = tk.Label(self.master, width = 15)
+        self.lab_left.pack()
+
         # button quit
         b_quit = tk.Button(self.master, text = "Quit", width = 10, command = quit)
         b_quit.pack()
@@ -70,6 +74,7 @@ class MainApplication(tk.Frame, TimeHanle):
 
     def widgets_update(self):
         self.lab_count.config(text = "elapsed: " + self.str_sec_elaps())
+        self.lab_left.config(text = "left: " + self.str_sec_left())
 
     def loop(self):
         if self.popup_due():
