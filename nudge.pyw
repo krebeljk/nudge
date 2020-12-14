@@ -10,8 +10,9 @@ class MainApplication(tk.Frame):
         self.create_widgets()
 
     def configure_gui(self):
-        pass
-       # ...
+        self.master.title("Break")
+        self.master.geometry("200x100")
+        self.master.resizable(False, False)
     def create_widgets(self):
         pass
        # ...
