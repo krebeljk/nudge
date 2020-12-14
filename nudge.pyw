@@ -28,12 +28,15 @@ class MainApplication(tk.Frame):
         b_quit.pack()
 
     def loop(self):
-        sec_elaps = (datetime.now() - self.t_start).total_seconds()
-        if sec_elaps > self.sec_popup:
+        if self.sec_elaps() > self.sec_popup:
             self.master.deiconify() # pop-up the window
 
         #loop back
         self.master.after(1000, self.loop)
+
+    def sec_elaps(self):
+        return (datetime.now() - self.t_start).total_seconds()
+
 
 
 if __name__ == '__main__':
