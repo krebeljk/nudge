@@ -26,10 +26,18 @@ class MainApplication(tk.Frame):
     def create_widgets(self):
         b_quit = tk.Button(self.master, text = "Quit", width = 10, command = quit)
         b_quit.pack()
+        b_snoo = tk.Button(self.master, text = "Snooze", width = 10, command = self.snooze)
+        b_snoo.pack()
 
     def loop(self):
         if self.sec_elaps() > self.sec_popup:
             self.master.deiconify() # pop-up the window
+
+        #loop back here
+        self.master.after(1000, self.loop)
+
+    def snooze(self):
+        self.sec_popup = self.sec_elaps() + SECNUDGE
 
         #loop back
         self.master.after(1000, self.loop)
