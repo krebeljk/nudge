@@ -13,6 +13,7 @@ class MainApplication(tk.Frame):
         self.configure_gui()
         self.create_widgets()
 
+        self.sec_popup = SECWORK
         self.t_start = datetime.now()
 
         self.loop()
@@ -28,7 +29,7 @@ class MainApplication(tk.Frame):
 
     def loop(self):
         sec_elaps = (datetime.now() - self.t_start).total_seconds()
-        if sec_elaps > SECWORK:
+        if sec_elaps > self.sec_popup:
             self.master.deiconify() # pop-up the window
 
         #loop back
