@@ -1,5 +1,6 @@
 import tkinter as tk
 from datetime import datetime
+import pandas as pd
 
 SECWORK = 3 # 45 * 60 # seconds
 SECNUDGE = 3 # 5 * 60 # seconds
@@ -9,6 +10,7 @@ class TimeHanle():
     def __init__(self):
         self.t_start = datetime.now()
         self.sec_popup = SECWORK
+        self.t_fmt = "%Y-%m-%d %H:%M:%S"
 
     def sec_elaps(self):
         return (datetime.now() - self.t_start).total_seconds()
@@ -32,6 +34,12 @@ class TimeHanle():
             sec = -sec
         return sign+'{:02.0f}:{:02.0f}:{:02.0f}'.format(sec // 3600, sec % 3600 // 60, sec % 60)
 
+    def str_date_now(self):
+        return datetime.now().strftime(self.t_fmt)
+
+    def str_date_start(self):
+        return self.t_start.strftime(self.t_fmt)
+
 
 
 class MainApplication(tk.Frame, TimeHanle):
@@ -49,10 +57,18 @@ class MainApplication(tk.Frame, TimeHanle):
 
     def configure_gui(self):
         self.master.title("Break")
-        self.master.geometry("200x100")
-        self.master.resizable(False, False)
+        self.master.geometry("400x200")
+        #self.master.resizable(False, False)
 
     def create_widgets(self):
+        # text
+        self.entry = tk.Entry(self.master)
+        self.entry.pack(fill="x")
+
+        # button submit
+        b_submit = tk.Button(self.master, text = "Submit", width = 10, command = self.submit)
+        b_submit.pack()
+
         # button snooze
         b_snoo = tk.Button(self.master, text = "Snooze", width = 10, command = self.snooze)
         b_snoo.pack()
@@ -88,7 +104,25 @@ class MainApplication(tk.Frame, TimeHanle):
     def snooze(self):
         self.sec_popup = self.sec_elaps() + SECNUDGE
 
+    def submit(self):
+        self.to_xlsx(task = self.entry.get())
 
+    def to_xlsx(self, task="aaa"):
+        fxlsx = "log.xlsx"
+        try:
+            df = pd.read_excel(fxlsx, engine='openpyxl')
+        except FileNotFoundError:
+            df = pd.DataFrame(columns=["start","end","delta","task"])
+
+        df2 = pd.DataFrame({
+                'start': self.str_date_start(),
+                'end': self.str_date_now(),
+                'delta': self.str_sec_elaps(),
+                'task': task
+                }, index=[1])
+        df = df.append(df2)
+        with pd.ExcelWriter(fxlsx) as writer:
+            df.to_excel(writer, index=False)
 
 if __name__ == '__main__':
    root = tk.Tk()
