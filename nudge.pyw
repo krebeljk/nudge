@@ -2,8 +2,8 @@ import tkinter as tk
 from datetime import datetime
 import pandas as pd
 
-SECWORK = 3 # 45 * 60 # seconds
-SECNUDGE = 3 # 5 * 60 # seconds
+SECWORK = 45 * 60 # seconds
+SECNUDGE = 5 * 60 # seconds
 
 
 class TimeHanle():
