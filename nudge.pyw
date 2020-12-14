@@ -8,12 +8,24 @@ SECNUDGE = 3 # 5 * 60 # seconds
 class TimeHanle():
     def __init__(self):
         self.t_start = datetime.now()
+        self.sec_popup = SECWORK
 
     def sec_elaps(self):
         return (datetime.now() - self.t_start).total_seconds()
 
     def str_sec_elaps(self):
-        sec = self.sec_elaps()
+        return self.sec_format(self.sec_elaps())
+
+    def str_sec_left(self):
+        return self.sec_format(self.sec_popup - self.sec_elaps())
+
+    def popup_due(self):
+        if self.sec_elaps() > self.sec_popup:
+            return True
+        else:
+            return False
+
+    def sec_format(self, sec):
         sign = ""
         if sec < 0:
             sign = "-"
@@ -31,7 +43,6 @@ class MainApplication(tk.Frame, TimeHanle):
         self.configure_gui()
         self.create_widgets()
 
-        self.sec_popup = SECWORK
 
 
         self.loop()
@@ -61,7 +72,7 @@ class MainApplication(tk.Frame, TimeHanle):
         self.lab_count.config(text = "elapsed: " + self.str_sec_elaps())
 
     def loop(self):
-        if self.sec_elaps() > self.sec_popup:
+        if self.popup_due():
             self.master.deiconify() # pop-up the window
 
         self.widgets_update()
