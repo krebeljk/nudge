@@ -1,8 +1,8 @@
 import tkinter as tk
 from datetime import datetime
 
-TIMEWORK = 3 # 45 * 60 # seconds
-TIMENUDGE = 3 # 5 * 60 # seconds
+SECWORK = 3 # 45 * 60 # seconds
+SECNUDGE = 3 # 5 * 60 # seconds
 
 
 class MainApplication(tk.Frame):
@@ -28,7 +28,7 @@ class MainApplication(tk.Frame):
 
     def loop(self):
         sec_elaps = (datetime.now() - self.t_start).total_seconds()
-        if sec_elaps > TIMEWORK:
+        if sec_elaps > SECWORK:
             self.master.deiconify() # pop-up the window
 
         #loop back
