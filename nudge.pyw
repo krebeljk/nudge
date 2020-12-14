@@ -24,10 +24,12 @@ class MainApplication(tk.Frame):
         self.master.resizable(False, False)
 
     def create_widgets(self):
-        b_quit = tk.Button(self.master, text = "Quit", width = 10, command = quit)
-        b_quit.pack()
+        # button snooze
         b_snoo = tk.Button(self.master, text = "Snooze", width = 10, command = self.snooze)
         b_snoo.pack()
+        # button quit
+        b_quit = tk.Button(self.master, text = "Quit", width = 10, command = quit)
+        b_quit.pack()
 
     def loop(self):
         if self.sec_elaps() > self.sec_popup:
