@@ -12,6 +12,14 @@ class TimeHanle():
     def sec_elaps(self):
         return (datetime.now() - self.t_start).total_seconds()
 
+    def str_sec_elaps(self):
+        sec = self.sec_elaps()
+        sign = ""
+        if sec < 0:
+            sign = "-"
+            sec = -sec
+        return sign+'{:02.0f}:{:02.0f}:{:02.0f}'.format(sec // 3600, sec % 3600 // 60, sec % 60)
+
 
 
 class MainApplication(tk.Frame, TimeHanle):
@@ -37,13 +45,26 @@ class MainApplication(tk.Frame, TimeHanle):
         # button snooze
         b_snoo = tk.Button(self.master, text = "Snooze", width = 10, command = self.snooze)
         b_snoo.pack()
+
+        # label elapsed
+        self.lab_count = tk.Label(self.master, width = 15)
+        self.lab_count.pack()
+
         # button quit
         b_quit = tk.Button(self.master, text = "Quit", width = 10, command = quit)
         b_quit.pack()
 
+        # update
+        self.widgets_update()
+
+    def widgets_update(self):
+        self.lab_count.config(text = "elapsed: " + self.str_sec_elaps())
+
     def loop(self):
         if self.sec_elaps() > self.sec_popup:
             self.master.deiconify() # pop-up the window
+
+        self.widgets_update()
 
         #loop back here
         self.master.after(1000, self.loop)
