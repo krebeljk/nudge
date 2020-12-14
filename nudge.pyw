@@ -64,6 +64,7 @@ class MainApplication(tk.Frame, TimeHanle):
         # text
         self.entry = tk.Entry(self.master)
         self.entry.pack(fill="x")
+        self.entry.bind("<Return>", self.submit)
 
         # button submit
         b_submit = tk.Button(self.master, text = "Submit", width = 10, command = self.submit)
@@ -105,8 +106,15 @@ class MainApplication(tk.Frame, TimeHanle):
     def snooze(self):
         self.sec_popup = self.sec_elaps() + SECNUDGE
 
-    def submit(self):
-        self.to_xlsx(task = self.entry.get())
+    def submit(self, event = None):
+        if event is None: # button click
+            task = self.entry.get()
+        else: # enter press
+            task = event.widget.get()
+
+        self.to_xlsx(task = task)
+
+        quit() # terminate program
 
     def to_xlsx(self, task="aaa"):
         fxlsx = "log.xlsx"
