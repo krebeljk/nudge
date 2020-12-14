@@ -39,9 +39,6 @@ class MainApplication(tk.Frame):
     def snooze(self):
         self.sec_popup = self.sec_elaps() + SECNUDGE
 
-        #loop back
-        self.master.after(1000, self.loop)
-
     def sec_elaps(self):
         return (datetime.now() - self.t_start).total_seconds()
 
