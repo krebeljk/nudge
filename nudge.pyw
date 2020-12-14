@@ -8,6 +8,7 @@ class MainApplication(tk.Frame):
         tk.Frame.__init__(self, self.master)
         self.configure_gui()
         self.create_widgets()
+        self.loop()
 
     def configure_gui(self):
         self.master.title("Break")
@@ -17,6 +18,10 @@ class MainApplication(tk.Frame):
     def create_widgets(self):
         b_quit = tk.Button(self.master, text = "Quit", width = 10, command = quit)
         b_quit.pack()
+
+    def loop(self):
+        self.master.after(1000, self.loop)
+
 
 if __name__ == '__main__':
    root = tk.Tk()
