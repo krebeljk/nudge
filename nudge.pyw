@@ -48,9 +48,10 @@ class MainApplication(tk.Frame, TimeHanle):
         self.master = master
         tk.Frame.__init__(self, self.master)
         TimeHanle.__init__(self)
+        self.running = True
         self.configure_gui()
         self.create_widgets()
-        self.running = True
+
         self.loop()
 
     def configure_gui(self):
@@ -80,6 +81,12 @@ class MainApplication(tk.Frame, TimeHanle):
         self.lab_left = tk.Label(self.master, width = 15)
         self.lab_left.pack()
 
+        # button stop
+        b_stop = tk.Button(self.master, text = "Stop", width = 10, command = self.stop)
+        b_stop.pack()
+        # button start
+        b_start = tk.Button(self.master, text = "Start", width = 10, command = self.start)
+        b_start.pack()
         # button quit
         b_quit = tk.Button(self.master, text = "Quit", width = 10, command = quit)
         b_quit.pack()
@@ -90,19 +97,31 @@ class MainApplication(tk.Frame, TimeHanle):
     def reset(self):
         self.t_start = datetime.now()
 
+    def start(self):
+        self.reset()
+        self.running = True
+
+    def stop(self):
+        self.running = False
+
     def widgets_update(self):
-        self.lab_count.config(text = "elapsed: " + self.str_sec_elaps())
-        self.lab_left.config(text = "left: " + self.str_sec_left())
+        el = ""
+        le = ""
+        if self.running:
+            el = self.str_sec_elaps()
+            le = self.str_sec_left()
+
+        self.lab_count.config(text = "elapsed: " + el)
+        self.lab_left.config(text = "left: " + le)
+
 
     def loop(self):
         if self.popup_due():
             self.master.deiconify() # pop-up the window
             #self.entry.focus() # commented - prevent accidental enter confirm
 
-        if not self.running:
-            self.reset()
-
         self.widgets_update()
+
 
         #loop back here
         self.master.after(1000, self.loop)
