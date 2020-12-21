@@ -6,7 +6,7 @@ SECWORK = 45 * 60 # seconds
 SECNUDGE = 5 * 60 # seconds
 
 
-class TimeHanle():
+class TimeHandle():
     def __init__(self):
         self.t_start = datetime.now()
         self.sec_popup = SECWORK
@@ -42,12 +42,12 @@ class TimeHanle():
 
 
 
-class MainApplication(tk.Frame, TimeHanle):
+class MainApplication(tk.Frame, TimeHandle):
 
     def __init__(self, master):
         self.master = master
         tk.Frame.__init__(self, self.master)
-        TimeHanle.__init__(self)
+        TimeHandle.__init__(self)
         self.running = True
         self.configure_gui()
         self.create_widgets()
@@ -95,7 +95,7 @@ class MainApplication(tk.Frame, TimeHanle):
         self.widgets_update()
 
     def reset(self):
-        TimeHanle.__init__(self)
+        TimeHandle.__init__(self)
 
     def start(self):
         self.reset()
