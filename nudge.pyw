@@ -115,10 +115,8 @@ class MainApplication(tk.Frame, TimeHanle):
             task = self.entry.get()
         else: # enter press
             task = event.widget.get()
-
         self.to_xlsx(task = task)
-
-        quit() # terminate program
+        self.running = False
 
     def to_xlsx(self, task="aaa"):
         fxlsx = "log.xlsx"
