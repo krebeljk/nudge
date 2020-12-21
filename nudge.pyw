@@ -3,7 +3,7 @@ from datetime import datetime
 import pandas as pd
 
 SECWORK = 45 * 60 # seconds
-SECNUDGE = 5 * 60 # seconds
+SECSNOOZE = 5 * 60 # seconds
 
 
 class TimeHandle():
@@ -129,7 +129,7 @@ class MainApplication(tk.Frame, TimeHandle):
         self.master.after(1000, self.loop)
 
     def snooze(self):
-        self.sec_popup = self.sec_elaps() + SECNUDGE
+        self.sec_popup = self.sec_elaps() + SECSNOOZE
         self.widgets_update()
 
     def submit(self, event = None):
