@@ -50,6 +50,7 @@ class MainApplication(tk.Frame, TimeHanle):
         TimeHanle.__init__(self)
         self.configure_gui()
         self.create_widgets()
+        self.running = True
         self.loop()
 
     def configure_gui(self):
@@ -86,6 +87,9 @@ class MainApplication(tk.Frame, TimeHanle):
         # update
         self.widgets_update()
 
+    def reset(self):
+        self.t_start = datetime.now()
+
     def widgets_update(self):
         self.lab_count.config(text = "elapsed: " + self.str_sec_elaps())
         self.lab_left.config(text = "left: " + self.str_sec_left())
@@ -94,6 +98,9 @@ class MainApplication(tk.Frame, TimeHanle):
         if self.popup_due():
             self.master.deiconify() # pop-up the window
             #self.entry.focus() # commented - prevent accidental enter confirm
+
+        if not self.running:
+            self.reset()
 
         self.widgets_update()
 
