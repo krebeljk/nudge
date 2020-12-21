@@ -50,9 +50,6 @@ class MainApplication(tk.Frame, TimeHanle):
         TimeHanle.__init__(self)
         self.configure_gui()
         self.create_widgets()
-
-
-
         self.loop()
 
     def configure_gui(self):
@@ -96,7 +93,7 @@ class MainApplication(tk.Frame, TimeHanle):
     def loop(self):
         if self.popup_due():
             self.master.deiconify() # pop-up the window
-            #self.entry.focus()
+            #self.entry.focus() # commented - prevent accidental enter confirm
 
         self.widgets_update()
 
