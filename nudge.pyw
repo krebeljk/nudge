@@ -95,14 +95,16 @@ class MainApplication(tk.Frame, TimeHanle):
         self.widgets_update()
 
     def reset(self):
-        self.t_start = datetime.now()
+        TimeHanle.__init__(self)
 
     def start(self):
         self.reset()
         self.running = True
+        self.widgets_update()
 
     def stop(self):
         self.running = False
+        self.widgets_update()
 
     def widgets_update(self):
         el = ""
@@ -128,6 +130,7 @@ class MainApplication(tk.Frame, TimeHanle):
 
     def snooze(self):
         self.sec_popup = self.sec_elaps() + SECNUDGE
+        self.widgets_update()
 
     def submit(self, event = None):
         if event is None: # button click
@@ -136,6 +139,7 @@ class MainApplication(tk.Frame, TimeHanle):
             task = event.widget.get()
         self.to_xlsx(task = task)
         self.running = False
+        self.widgets_update()
 
     def to_xlsx(self, task="aaa"):
         fxlsx = "log.xlsx"
