@@ -134,6 +134,11 @@ class MainApplication(tk.Frame, TimeHandle):
             task = self.entry.get()
         else: # enter press
             task = event.widget.get()
+
+        # clear entry field
+        self.entry.delete(0,tk.END)
+        self.entry.insert(0,"")
+
         self.to_xlsx(task = task)
         self.running = False
         self.widgets_update()
