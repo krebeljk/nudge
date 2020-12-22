@@ -41,7 +41,6 @@ class TimeHandle():
         return self.t_start.strftime(self.t_fmt)
 
 
-
 class MainApplication(tk.Frame, TimeHandle):
 
     def __init__(self, master):
@@ -86,8 +85,6 @@ class MainApplication(tk.Frame, TimeHandle):
         self.b_startStop = tk.Button(self.master, text = "Stop", width = 10, command = self.startStop)
         self.b_startStop.pack()
 
-
-
         # update
         self.widgets_update()
 
@@ -95,7 +92,6 @@ class MainApplication(tk.Frame, TimeHandle):
         TimeHandle.__init__(self)
         self.popped = False
         self.entryClear()
-
 
     def startStop(self):
         self.reset()
@@ -123,7 +119,6 @@ class MainApplication(tk.Frame, TimeHandle):
             #self.entry.focus() # commented - prevent accidental enter confirm
 
         self.widgets_update()
-
 
         #loop back here
         self.master.after(1000, self.loop)
@@ -154,7 +149,7 @@ class MainApplication(tk.Frame, TimeHandle):
         self.entry.delete(0,tk.END)
         self.entry.insert(0,"")
 
-    def to_xlsx(self, task="aaa"):
+    def to_xlsx(self, task=""):
         fxlsx = "log.xlsx"
         try:
             df = pd.read_excel(fxlsx, engine='openpyxl')
