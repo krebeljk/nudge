@@ -111,11 +111,16 @@ class MainApplication(tk.Frame, TimeHandle):
         el = ""
         le = ""
         if self.running:
-            el = self.str_sec_elaps()
-            le = self.str_sec_left()
+            el = "elapsed: " + self.str_sec_elaps()
+            le = "left: " + self.str_sec_left()
+        else:
+            el = "elapsed:"
+            le = "left:"
 
-        self.lab_count.config(text = "elapsed: " + el)
-        self.lab_left.config(text = "left: " + le)
+        self.lab_count.config(text = el)
+        self.lab_left.config(text = le)
+
+
 
 
     def loop(self):
