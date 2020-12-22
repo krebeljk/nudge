@@ -87,9 +87,7 @@ class MainApplication(tk.Frame, TimeHandle):
         # button start
         b_start = tk.Button(self.master, text = "Start", width = 10, command = self.start)
         b_start.pack()
-        # button quit
-        b_quit = tk.Button(self.master, text = "Quit", width = 10, command = quit)
-        b_quit.pack()
+
 
         # update
         self.widgets_update()
