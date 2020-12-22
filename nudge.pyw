@@ -97,11 +97,11 @@ class MainApplication(tk.Frame, TimeHandle):
 
 
     def startStop(self):
+        self.reset()
         if self.running: # stop
             self.running = False
             self.b_startStop.config(text="Start")
         else: # start
-            self.reset()
             self.running = True
             self.b_startStop.config(text="Stop")
 
@@ -114,8 +114,8 @@ class MainApplication(tk.Frame, TimeHandle):
             el = "elapsed: " + self.str_sec_elaps()
             le = "left: " + self.str_sec_left()
         else:
-            el = "elapsed:"
-            le = "left:"
+            el = "break"
+            le = self.str_sec_elaps()
 
         self.lab_count.config(text = el)
         self.lab_left.config(text = le)
@@ -136,11 +136,15 @@ class MainApplication(tk.Frame, TimeHandle):
         self.master.after(1000, self.loop)
 
     def snooze(self):
+        if not self.running:
+            return
         self.sec_popup = self.sec_elaps() + SECSNOOZE
         self.popped = False
         self.widgets_update()
 
     def submit(self, event = None):
+        if not self.running:
+            return
         if event is None: # button click
             task = self.entry.get()
         else: # enter press
