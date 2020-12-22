@@ -67,12 +67,12 @@ class MainApplication(tk.Frame, TimeHandle):
         self.entry.bind("<Return>", self.submit)
 
         # button submit
-        b_submit = tk.Button(self.master, text = "Submit", width = 10, command = self.submit)
-        b_submit.pack()
+        self.b_submit = tk.Button(self.master, text = "Submit", width = 10, command = self.submit)
+        self.b_submit.pack()
 
         # button snooze
-        b_snoo = tk.Button(self.master, text = "Snooze", width = 10, command = self.snooze)
-        b_snoo.pack()
+        self.b_snoo = tk.Button(self.master, text = "Snooze", width = 10, command = self.snooze)
+        self.b_snoo.pack()
 
         # label elapsed
         self.lab_count = tk.Label(self.master, width = 15)
@@ -94,34 +94,27 @@ class MainApplication(tk.Frame, TimeHandle):
     def reset(self):
         TimeHandle.__init__(self)
         self.popped = False
+        self.entryClear()
 
 
     def startStop(self):
         self.reset()
-        if self.running: # stop
-            self.running = False
-            self.b_startStop.config(text="Start")
-        else: # start
-            self.running = True
-            self.b_startStop.config(text="Stop")
-
+        self.running = not self.running # toggle
         self.widgets_update()
 
     def widgets_update(self):
-        el = ""
-        le = ""
         if self.running:
-            el = "elapsed: " + self.str_sec_elaps()
-            le = "left: " + self.str_sec_left()
+            self.b_submit.pack() #show
+            self.b_snoo.pack() #show
+            self.lab_count.config(text = "elapsed: " + self.str_sec_elaps())
+            self.lab_left.config(text =  self.str_sec_left())
+            self.b_startStop.config(text="Stop")
         else:
-            el = "break"
-            le = self.str_sec_elaps()
-
-        self.lab_count.config(text = el)
-        self.lab_left.config(text = le)
-
-
-
+            self.b_submit.pack_forget() #hide
+            self.b_snoo.pack_forget() #hide
+            self.lab_count.config(text ="break")
+            self.lab_left.config(text = self.str_sec_elaps())
+            self.b_startStop.config(text="Start")
 
     def loop(self):
         if self.popup_due() and not self.popped:
@@ -150,13 +143,16 @@ class MainApplication(tk.Frame, TimeHandle):
         else: # enter press
             task = event.widget.get()
 
-        # clear entry field
-        self.entry.delete(0,tk.END)
-        self.entry.insert(0,"")
+        self.entryClear()
 
         self.to_xlsx(task = task)
         self.running = False
         self.widgets_update()
+
+    def entryClear(self):
+        # clear entry field
+        self.entry.delete(0,tk.END)
+        self.entry.insert(0,"")
 
     def to_xlsx(self, task="aaa"):
         fxlsx = "log.xlsx"
