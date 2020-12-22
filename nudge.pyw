@@ -163,12 +163,13 @@ class MainApplication(tk.Frame, TimeHandle):
         try:
             df = pd.read_excel(fxlsx, engine='openpyxl')
         except FileNotFoundError:
-            df = pd.DataFrame(columns=["start","end","delta","task"])
+            df = pd.DataFrame(columns=["start","end","delta","seconds","task"])
 
         df2 = pd.DataFrame({
                 'start': self.str_date_start(),
                 'end': self.str_date_now(),
                 'delta': self.str_sec_elaps(),
+                'seconds': self.sec_elaps(),
                 'task': task
                 }, index=[1])
         df = df.append(df2)
