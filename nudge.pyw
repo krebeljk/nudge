@@ -49,6 +49,7 @@ class MainApplication(tk.Frame, TimeHandle):
         tk.Frame.__init__(self, self.master)
         TimeHandle.__init__(self)
         self.running = True
+        self.popped = False
         self.configure_gui()
         self.create_widgets()
 
@@ -92,15 +93,18 @@ class MainApplication(tk.Frame, TimeHandle):
 
     def reset(self):
         TimeHandle.__init__(self)
+        self.popped = False
 
 
     def startStop(self):
-        if self.running:
+        if self.running: # stop
             self.running = False
             self.b_startStop.config(text="Start")
-        else:
+        else: # start
+            self.reset()
             self.running = True
             self.b_startStop.config(text="Stop")
+
         self.widgets_update()
 
     def widgets_update(self):
@@ -115,8 +119,9 @@ class MainApplication(tk.Frame, TimeHandle):
 
 
     def loop(self):
-        if self.popup_due():
+        if self.popup_due() and not self.popped:
             self.master.deiconify() # pop-up the window
+            self.popped = True
             #self.entry.focus() # commented - prevent accidental enter confirm
 
         self.widgets_update()
@@ -127,6 +132,7 @@ class MainApplication(tk.Frame, TimeHandle):
 
     def snooze(self):
         self.sec_popup = self.sec_elaps() + SECSNOOZE
+        self.popped = False
         self.widgets_update()
 
     def submit(self, event = None):
