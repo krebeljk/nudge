@@ -81,12 +81,10 @@ class MainApplication(tk.Frame, TimeHandle):
         self.lab_left = tk.Label(self.master, width = 15)
         self.lab_left.pack()
 
-        # button stop
-        b_stop = tk.Button(self.master, text = "Stop", width = 10, command = self.stop)
-        b_stop.pack()
-        # button start
-        b_start = tk.Button(self.master, text = "Start", width = 10, command = self.start)
-        b_start.pack()
+        # button start/stop
+        self.b_startStop = tk.Button(self.master, text = "Stop", width = 10, command = self.startStop)
+        self.b_startStop.pack()
+
 
 
         # update
@@ -95,13 +93,14 @@ class MainApplication(tk.Frame, TimeHandle):
     def reset(self):
         TimeHandle.__init__(self)
 
-    def start(self):
-        self.reset()
-        self.running = True
-        self.widgets_update()
 
-    def stop(self):
-        self.running = False
+    def startStop(self):
+        if self.running:
+            self.running = False
+            self.b_startStop.config(text="Start")
+        else:
+            self.running = True
+            self.b_startStop.config(text="Stop")
         self.widgets_update()
 
     def widgets_update(self):
