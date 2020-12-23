@@ -161,7 +161,7 @@ class MainApplication(tk.Frame, TimeHandle):
                 'start': self.str_date_start(),
                 'end': self.str_date_now(),
                 'delta': self.str_sec_elaps(),
-                'seconds': self.sec_elaps(),
+                'seconds': int(round(self.sec_elaps())),
                 'task': task
                 }, index=[1])
         df = df.append(df2)
