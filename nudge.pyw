@@ -142,6 +142,7 @@ class MainApplication(tk.Frame, TimeHandle):
 
         self.to_xlsx(task = task)
         self.running = False
+        self.reset()
         self.widgets_update()
 
     def entryClear(self):
