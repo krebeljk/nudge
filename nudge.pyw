@@ -99,18 +99,36 @@ class MainApplication(tk.Frame, TimeHandle):
         self.widgets_update()
 
     def widgets_update(self):
+        self.widgets_clear()
         if self.running:
             self.b_submit.pack() #show
             self.b_snoo.pack() #show
+
             self.lab_count.config(text = "elapsed: " + self.str_sec_elaps())
+            self.lab_count.pack()
+
             self.lab_left.config(text =  self.str_sec_left())
+            self.lab_left.pack()
+
             self.b_startStop.config(text="Stop")
+            self.b_startStop.pack()
         else:
-            self.b_submit.pack_forget() #hide
-            self.b_snoo.pack_forget() #hide
             self.lab_count.config(text ="break")
+            self.lab_count.pack()
+
             self.lab_left.config(text = self.str_sec_elaps())
+            self.lab_left.pack()
+
             self.b_startStop.config(text="Start")
+            self.b_startStop.pack()
+
+    def widgets_clear(self):
+            self.b_submit.pack_forget()
+            self.b_snoo.pack_forget()
+            self.lab_count.pack_forget()
+            self.lab_left.pack_forget()
+            self.b_startStop.pack_forget()
+
 
     def loop(self):
         if self.popup_due() and not self.popped:
