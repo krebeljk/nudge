@@ -3,10 +3,10 @@ from datetime import datetime
 import pandas as pd
 
 SECWORK = 45 * 60 # seconds
-SECNUDGE = 5 * 60 # seconds
+SECSNOOZE = 5 * 60 # seconds
 
 
-class TimeHanle():
+class TimeHandle():
     def __init__(self):
         self.t_start = datetime.now()
         self.sec_popup = SECWORK
@@ -41,17 +41,16 @@ class TimeHanle():
         return self.t_start.strftime(self.t_fmt)
 
 
-
-class MainApplication(tk.Frame, TimeHanle):
+class MainApplication(tk.Frame, TimeHandle):
 
     def __init__(self, master):
         self.master = master
         tk.Frame.__init__(self, self.master)
-        TimeHanle.__init__(self)
+        TimeHandle.__init__(self)
+        self.running = True
+        self.popped = False
         self.configure_gui()
         self.create_widgets()
-
-
 
         self.loop()
 
@@ -67,12 +66,12 @@ class MainApplication(tk.Frame, TimeHanle):
         self.entry.bind("<Return>", self.submit)
 
         # button submit
-        b_submit = tk.Button(self.master, text = "Submit", width = 10, command = self.submit)
-        b_submit.pack()
+        self.b_submit = tk.Button(self.master, text = "Submit", width = 10, command = self.submit)
+        self.b_submit.pack()
 
         # button snooze
-        b_snoo = tk.Button(self.master, text = "Snooze", width = 10, command = self.snooze)
-        b_snoo.pack()
+        self.b_snoo = tk.Button(self.master, text = "Snooze", width = 10, command = self.snooze)
+        self.b_snoo.pack()
 
         # label elapsed
         self.lab_count = tk.Label(self.master, width = 15)
@@ -82,21 +81,60 @@ class MainApplication(tk.Frame, TimeHanle):
         self.lab_left = tk.Label(self.master, width = 15)
         self.lab_left.pack()
 
-        # button quit
-        b_quit = tk.Button(self.master, text = "Quit", width = 10, command = quit)
-        b_quit.pack()
+        # button start/stop
+        self.b_startStop = tk.Button(self.master, text = "Stop", width = 10, command = self.startStop)
+        self.b_startStop.pack()
 
         # update
         self.widgets_update()
 
+    def reset(self):
+        TimeHandle.__init__(self)
+        self.popped = False
+        self.entryClear()
+
+    def startStop(self):
+        self.reset()
+        self.running = not self.running # toggle
+        self.widgets_update()
+
     def widgets_update(self):
-        self.lab_count.config(text = "elapsed: " + self.str_sec_elaps())
-        self.lab_left.config(text = "left: " + self.str_sec_left())
+        self.widgets_clear()
+        if self.running:
+            self.b_submit.pack() #show
+            self.b_snoo.pack() #show
+
+            self.lab_count.config(text = "elapsed   " + self.str_sec_elaps())
+            self.lab_count.pack()
+
+            self.lab_left.config(text = "left   " + self.str_sec_left())
+            self.lab_left.pack()
+
+            self.b_startStop.config(text="Stop")
+            self.b_startStop.pack()
+        else:
+            self.lab_count.config(text ="break")
+            self.lab_count.pack()
+
+            self.lab_left.config(text = self.str_sec_elaps())
+            self.lab_left.pack()
+
+            self.b_startStop.config(text="Start")
+            self.b_startStop.pack()
+
+    def widgets_clear(self):
+            self.b_submit.pack_forget()
+            self.b_snoo.pack_forget()
+            self.lab_count.pack_forget()
+            self.lab_left.pack_forget()
+            self.b_startStop.pack_forget()
+
 
     def loop(self):
-        if self.popup_due():
+        if self.popup_due() and not self.popped:
             self.master.deiconify() # pop-up the window
-            self.entry.focus()
+            self.popped = True
+            #self.entry.focus() # commented - prevent accidental enter confirm
 
         self.widgets_update()
 
@@ -104,29 +142,44 @@ class MainApplication(tk.Frame, TimeHanle):
         self.master.after(1000, self.loop)
 
     def snooze(self):
-        self.sec_popup = self.sec_elaps() + SECNUDGE
+        if not self.running:
+            return
+        self.sec_popup = self.sec_elaps() + SECSNOOZE
+        self.popped = False
+        self.widgets_update()
 
     def submit(self, event = None):
+        if not self.running:
+            return
         if event is None: # button click
             task = self.entry.get()
         else: # enter press
             task = event.widget.get()
 
+        self.entryClear()
+
         self.to_xlsx(task = task)
+        self.running = False
+        self.reset()
+        self.widgets_update()
 
-        quit() # terminate program
+    def entryClear(self):
+        # clear entry field
+        self.entry.delete(0,tk.END)
+        self.entry.insert(0,"")
 
-    def to_xlsx(self, task="aaa"):
+    def to_xlsx(self, task=""):
         fxlsx = "log.xlsx"
         try:
             df = pd.read_excel(fxlsx, engine='openpyxl')
         except FileNotFoundError:
-            df = pd.DataFrame(columns=["start","end","delta","task"])
+            df = pd.DataFrame(columns=["start","end","delta","seconds","task"])
 
         df2 = pd.DataFrame({
                 'start': self.str_date_start(),
                 'end': self.str_date_now(),
                 'delta': self.str_sec_elaps(),
+                'seconds': int(round(self.sec_elaps())),
                 'task': task
                 }, index=[1])
         df = df.append(df2)
