@@ -104,10 +104,10 @@ class MainApplication(tk.Frame, TimeHandle):
             self.b_submit.pack() #show
             self.b_snoo.pack() #show
 
-            self.lab_count.config(text = "elapsed: " + self.str_sec_elaps())
+            self.lab_count.config(text = "elapsed   " + self.str_sec_elaps())
             self.lab_count.pack()
 
-            self.lab_left.config(text =  self.str_sec_left())
+            self.lab_left.config(text = "left   " + self.str_sec_left())
             self.lab_left.pack()
 
             self.b_startStop.config(text="Stop")
