@@ -101,6 +101,7 @@ class MainApplication(tk.Frame, TimeHandle):
     def widgets_update(self):
         self.widgets_clear()
         if self.running:
+            self.b_submit.config(text = "Submit")
             self.b_submit.pack() #show
             self.b_snoo.pack() #show
 
@@ -121,6 +122,9 @@ class MainApplication(tk.Frame, TimeHandle):
 
             self.b_startStop.config(text="Start")
             self.b_startStop.pack()
+
+            self.b_submit.config(text = "Brk sbm")
+            self.b_submit.pack() #show
 
     def widgets_clear(self):
             self.b_submit.pack_forget()
@@ -149,12 +153,14 @@ class MainApplication(tk.Frame, TimeHandle):
         self.widgets_update()
 
     def submit(self, event = None):
-        if not self.running:
-            return
         if event is None: # button click
             task = self.entry.get()
         else: # enter press
             task = event.widget.get()
+            if not self.running and not task: # break mode, empty field -> ignore event
+                return
+
+
 
         self.entryClear()
 
