@@ -101,6 +101,7 @@ class MainApplication(tk.Frame, TimeHandle):
     def widgets_update(self):
         self.widgets_clear()
         if self.running:
+            self.b_submit.config(text = "Submit")
             self.b_submit.pack() #show
             self.b_snoo.pack() #show
 
@@ -121,6 +122,9 @@ class MainApplication(tk.Frame, TimeHandle):
 
             self.b_startStop.config(text="Start")
             self.b_startStop.pack()
+
+            self.b_submit.config(text = "Brk sbm")
+            self.b_submit.pack() #show
 
     def widgets_clear(self):
             self.b_submit.pack_forget()
@@ -149,16 +153,18 @@ class MainApplication(tk.Frame, TimeHandle):
         self.widgets_update()
 
     def submit(self, event = None):
-        if not self.running:
-            return
         if event is None: # button click
             task = self.entry.get()
         else: # enter press
             task = event.widget.get()
+            if not self.running and not task: # break mode, empty field -> ignore event
+                return
+
+
 
         self.entryClear()
 
-        self.to_xlsx(task = task)
+        self.to_csv(task = task)
         self.running = False
         self.reset()
         self.widgets_update()
@@ -168,10 +174,10 @@ class MainApplication(tk.Frame, TimeHandle):
         self.entry.delete(0,tk.END)
         self.entry.insert(0,"")
 
-    def to_xlsx(self, task=""):
-        fxlsx = "log.xlsx"
+    def to_csv(self, task=""):
+        filename = "log.csv"
         try:
-            df = pd.read_excel(fxlsx, engine='openpyxl')
+            df = pd.read_csv(filename)
         except FileNotFoundError:
             df = pd.DataFrame(columns=["start","end","delta","seconds","task"])
 
@@ -183,8 +189,7 @@ class MainApplication(tk.Frame, TimeHandle):
                 'task': task
                 }, index=[1])
         df = df.append(df2)
-        with pd.ExcelWriter(fxlsx) as writer:
-            df.to_excel(writer, index=False)
+        df.to_csv("log.csv", index=False)
 
 if __name__ == '__main__':
    root = tk.Tk()
