@@ -164,7 +164,7 @@ class MainApplication(tk.Frame, TimeHandle):
 
         self.entryClear()
 
-        self.to_xlsx(task = task)
+        self.to_csv(task = task)
         self.running = False
         self.reset()
         self.widgets_update()
@@ -174,10 +174,10 @@ class MainApplication(tk.Frame, TimeHandle):
         self.entry.delete(0,tk.END)
         self.entry.insert(0,"")
 
-    def to_xlsx(self, task=""):
-        fxlsx = "log.xlsx"
+    def to_csv(self, task=""):
+        filename = "log.csv"
         try:
-            df = pd.read_excel(fxlsx, engine='openpyxl')
+            df = pd.read_csv(filename)
         except FileNotFoundError:
             df = pd.DataFrame(columns=["start","end","delta","seconds","task"])
 
@@ -189,8 +189,7 @@ class MainApplication(tk.Frame, TimeHandle):
                 'task': task
                 }, index=[1])
         df = df.append(df2)
-        with pd.ExcelWriter(fxlsx) as writer:
-            df.to_excel(writer, index=False)
+        df.to_csv("log.csv", index=False)
 
 if __name__ == '__main__':
    root = tk.Tk()

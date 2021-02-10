@@ -1,6 +1,6 @@
 # nudge
 
-A minimalist time tracker (to xlsx) and break reminder in python 3.
+A minimalist time tracker (to csv) and break reminder in python 3.
 
 ![nudge](nudge_gui.png)
 
@@ -18,7 +18,6 @@ Use `pythonw.exe` or `pythonw` to run (gui without the console).
 
 - Create a shortcut to the script on the desktop so that it is convenient to start the logging.
 - Time-track different projects just by copy-pasting the script to a different folder (or do the renames in the scirpt).
-- Do log-processing in a different excel file that imports `log.xlsx`.
 - Modify the script as you wish.
 
 ## Author

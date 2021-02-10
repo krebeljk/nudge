@@ -1,7 +1,3 @@
-log.xlsx
-log_bck.xlsx
-.~lock.log.xlsx
-LOG_analyze.xlsx
-~$LOG_analyze.xlsx
-~$log.xlsx
+log.csv
+log_bck.csv
 .ipynb_checkpoints
