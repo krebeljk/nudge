@@ -11,7 +11,7 @@ Use `pythonw.exe` or `pythonw` to run (gui without the console).
 ## Functionality
 
 * The GUI window popps up after 45 min to remind the user to take a break.
-* The user can submit an activity description to `log.xlsx` (date start, date end, time delta, activity).
+* The user can submit an activity description to `log.csv` (date start, date end, time delta, activity).
 * The snooze button schedules the reminter to 5 min later.
 * Statistics with a [jupyter notebook](log_process.ipynb).
 
